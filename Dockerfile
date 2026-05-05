@@ -33,4 +33,4 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 EXPOSE 4015
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:deploy"]

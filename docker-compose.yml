@@ -10,6 +10,11 @@ services:
       - ./app-data:/app/data
       - ./logs:/app/logs
     restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
   db:
     image: postgres:16-alpine
     restart: always

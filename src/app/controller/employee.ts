@@ -24,7 +24,6 @@ export class EmployeeController {
     @Permission('EMPLOYEE_GET_DETAIL')
     @UseGuards(RoleGuard)
     async getDetail(@GetDecoded() decoded: DecodedJwt) {
-        Logger.debug(`decoded: ${JSON.stringify(decoded, null, 2)}`, 'EC-GD-02')
         try {
             const employee = await this.repo.db.employee.findById(undefined, decoded.id);
             if (!employee) {
@@ -44,7 +43,7 @@ export class EmployeeController {
                 statusCode: HttpStatus.OK,
                 data: {
                     ...employeeData,
-                    photo_url: await this.infra.bucket.getUrl(employeeData.photo_key),
+                    photo_url: employeeData.photo_key ? await this.infra.bucket.getUrl(employeeData.photo_key) : '',
                     attendance_today: attendanceToday.data,
                 }
             }
@@ -92,7 +91,7 @@ export class EmployeeController {
                 statusCode: HttpStatus.OK,
                 data: {
                     ...employeeData,
-                    photo_url: await this.infra.bucket.getUrl(employeeData.photo_key)
+                    photo_url: employeeData.photo_key ? await this.infra.bucket.getUrl(employeeData.photo_key) : ''
                 }
             }
         } catch (e) {
