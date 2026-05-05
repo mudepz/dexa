@@ -11,7 +11,7 @@
     "deploy-prisma": "npx prisma migrate deploy && npx prisma generate && node dist/prisma/seed.js",
     "deploy-prisma:debug": "npx prisma migrate deploy && npx prisma generate && npx prisma db seed"
   },
-  "prisma": {
+  "prisma": { 
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
@@ -31,7 +31,9 @@
     "ethers": "^5.8.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "2.0.2",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

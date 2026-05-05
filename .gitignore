@@ -1,0 +1,8 @@
+node_modules
+postgres-data
+dist
+.idea
+*.DS_Store
+app/*
+.vscode
+.env*
