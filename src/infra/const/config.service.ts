@@ -9,8 +9,15 @@ export class ConfigService {
     readonly databaseUrl: string;
     readonly debug: boolean
     readonly environment: string;
-    readonly logDir: string;
     readonly jwtSecret: string;
+    readonly logDir: string;
+    readonly minio: {
+        bucketName: string;
+        endpoint: string;
+        password: string;
+        region: string;
+        user: string;
+    };
     readonly port: string;
 
     constructor() {
@@ -22,10 +29,17 @@ export class ConfigService {
         this.databaseUrl = process.env.DATABASE_URL || ''
         this.debug = process.env.DEBUG == 'true'
         this.environment = process.env.ENVIRONMENT || ''
-
-        this.logDir = process.env.LOG_DIR || ''
-        
         this.jwtSecret = process.env.JWT_SECRET || ''
+        this.logDir = process.env.LOG_DIR || ''
+
+        this.minio = {
+            bucketName: process.env.MINIO_BUCKET_NAME || '',
+            endpoint: process.env.MINIO_ENDPOINT || '',
+            password: process.env.MINIO_PASSWORD || '',
+            region: process.env.MINIO_REGION || '',
+            user: process.env.MINIO_USER || ''
+        }
+
         this.port = process.env.PORT || ''
     }
 }

@@ -33,7 +33,7 @@ export class BaseDb<
         });
     }
 
-    async findById(tx: Prisma.TransactionClient | PrismaClient, id: TId): Promise<TEntity | null> {
+    async findById(tx: Prisma.TransactionClient | PrismaClient, id: TId): Promise<TEntity> {
         const model = this.getModel(tx);
         return (model as any).findUnique({
             where: { id },

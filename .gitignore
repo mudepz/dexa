@@ -1,8 +1,9 @@
 node_modules
 postgres-data
+minio-data
 dist
 .idea
 *.DS_Store
 app/*
 .vscode
-.env*
+# .env*

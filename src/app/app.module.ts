@@ -1,9 +1,15 @@
 import { Module } from "@nestjs/common";
 import { InfraModule } from "../infra/infra.module";
 import { RepoModule } from "../repo/repo.module";
+import { AuthController } from "./controller/auth";
+import { EmployeeController } from "./controller/employee";
+import { AttendanceController } from "./controller/attendance";
 
 @Module({
     controllers: [
+        AuthController,
+        EmployeeController,
+        AttendanceController,
     ],
     imports: [
         InfraModule,

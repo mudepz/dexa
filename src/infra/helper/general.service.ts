@@ -34,7 +34,7 @@ export class GeneralService implements OnModuleInit {
         const sanitized = valueAsString.replace(/[^0-9.-]+/g, '');
         const standardized = sanitized.replace(',', '.');
         const result = parseFloat(standardized);
-        
+
         return isNaN(result) ? 0 : result;
     }
 
@@ -56,11 +56,11 @@ export class GeneralService implements OnModuleInit {
             return value;
         }
         if (typeof value === 'number') {
-            return BigInt(value); 
+            return BigInt(value);
         }
         if (typeof value === 'string') {
-            const numericValue = value.replace(/[^0-9.-]+/g, ''); 
-            return BigInt(numericValue); 
+            const numericValue = value.replace(/[^0-9.-]+/g, '');
+            return BigInt(numericValue);
         }
         if (Array.isArray(value)) {
             return BigInt(value[0]);
@@ -81,7 +81,7 @@ export class GeneralService implements OnModuleInit {
         if (typeof value === 'object' && 'toNumber' in value) {
             number = value.toNumber();
         } else if (typeof value === 'bigint') {
-            number = Number(value); 
+            number = Number(value);
         } else {
             number = Number(value);
         }
@@ -130,7 +130,7 @@ export class GeneralService implements OnModuleInit {
         return sortedA.every((val, i) => val === sortedB[i])
     }
 
-    parseIndonesianDate(date: string, format: string): Date | null {
+    parseIndonesianDate(date: string, format: string): Date {
         let parsed = dayjs.utc(date).tz('Asia/Jakarta')
         if (!parsed.isValid() && format) {
             parsed = dayjs.utc(date, format).tz('Asia/Jakarta')

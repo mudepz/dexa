@@ -4,6 +4,7 @@ import { HelperService } from "./helper/helper.service";
 import { JsonService } from "./json/json.service";
 import { CustomLoggerService } from "./logger/logger.service";
 import { PrismaService } from "./prisma/prisma.service";
+import { BucketService } from "./bucket/bucket.service";
 
 @Injectable()
 export class InfraService {
@@ -13,6 +14,7 @@ export class InfraService {
         readonly json: JsonService,
         readonly prisma: PrismaService,
         readonly logger: CustomLoggerService,
+        readonly bucket: BucketService,
     ) {
     }
 }
