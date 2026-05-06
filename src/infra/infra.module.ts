@@ -6,12 +6,14 @@ import { JsonModule } from "./json/json.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { CustomLoggerService } from "./logger/logger.service";
 import { BucketService } from "./bucket/bucket.service";
+import { WebsocketService } from "./websocket/websocket.service";
 
 @Module({
     providers: [
         PrismaService,
         CustomLoggerService,
         BucketService,
+        WebsocketService,
         InfraService,
     ],
     imports: [

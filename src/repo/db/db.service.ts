@@ -3,6 +3,7 @@ import { Employee } from "./employee";
 import { RolePermission } from "./role_permission";
 import { Permission } from "./permission";
 import { Attendance } from "./attendance";
+import { EmployeeLog } from "./employee-log";
 
 @Injectable()
 export class DbService {
@@ -11,6 +12,7 @@ export class DbService {
         readonly permission: Permission,
         readonly rolePermission: RolePermission,
         readonly attendance: Attendance,
+        readonly employeeLog: EmployeeLog,
     ) {
     }
 }

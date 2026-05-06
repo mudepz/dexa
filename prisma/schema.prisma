@@ -52,10 +52,11 @@ model employee {
   role_id       Int
   created_by_id BigInt?
 
-  role             role         @relation(fields: [role_id], references: [id])
-  created_by       employee?    @relation("createdBy", fields: [created_by_id], references: [id])
-  employee_created employee[]   @relation("createdBy")
+  role             role           @relation(fields: [role_id], references: [id])
+  created_by       employee?      @relation("createdBy", fields: [created_by_id], references: [id])
+  employee_created employee[]     @relation("createdBy")
   attendances      attendance[]
+  logs             employee_log[]
 }
 
 model attendance {
@@ -65,4 +66,14 @@ model attendance {
   tap_out_at  DateTime? @db.Timestamptz(6)
 
   employee employee @relation(fields: [employee_id], references: [id])
+}
+
+model employee_log {
+  id          String   @id @default(uuid())
+  timestamp   DateTime @default(now()) @db.Timestamptz(6)
+  employee_id BigInt
+  old_value   Json?
+  new_value   Json?
+
+  employee employee? @relation(fields: [employee_id], references: [id])
 }

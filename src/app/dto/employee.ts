@@ -18,6 +18,13 @@ export class EmployeeUpdateBody {
 }
 
 export class EmployeeUpdateFile extends EmployeeUpdateBody {
-    @ApiProperty({ type: 'string', format: 'binary', isArray: true, required: false })
+    @ApiProperty({ type: 'string', format: 'binary', isArray: false, required: false })
     file: any;
+}
+
+export class EmployeeLog {
+    timestamp: Date
+    employee_id: bigint
+    old_value: string
+    new_value: string
 }

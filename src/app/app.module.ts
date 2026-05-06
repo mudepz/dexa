@@ -4,6 +4,7 @@ import { RepoModule } from "../repo/repo.module";
 import { AuthController } from "./controller/auth";
 import { EmployeeController } from "./controller/employee";
 import { AttendanceController } from "./controller/attendance";
+import { ProcessorModule } from "./processor/processor.module";
 
 @Module({
     controllers: [
@@ -14,6 +15,7 @@ import { AttendanceController } from "./controller/attendance";
     imports: [
         InfraModule,
         RepoModule,
+        ProcessorModule,
     ],
     exports: [
         InfraModule,

@@ -20,11 +20,13 @@ export class BucketService implements OnModuleInit {
 
     onModuleInit() {
         this.client = new S3Client({
+            endpoint: this.constS.config.minio.endpoint,
             region: this.constS.config.minio.region,
             credentials: {
                 accessKeyId: this.constS.config.minio.user,
                 secretAccessKey: this.constS.config.minio.password
             },
+            forcePathStyle: true,
         })
     }
 

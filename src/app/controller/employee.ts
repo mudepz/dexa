@@ -3,12 +3,12 @@ import { ApiBearerAuth, ApiBody, ApiConsumes } from "@nestjs/swagger";
 import { InfraService } from "../../infra/infra.service";
 import { RepoService } from "../../repo/repo.service";
 import { ApiTokenGuard } from "../middleware/guard";
-import { EmployeeUpdateBody, EmployeeUpdateFile } from "../dto/employee";
+import { EmployeeLog, EmployeeUpdateBody, EmployeeUpdateFile } from "../dto/employee";
 import { DecodedJwt } from "../dto/middleware";
 import { GetDecoded } from "../middleware/decoded.decorator";
 import { Permission } from "../middleware/permission.decorator";
 import { RoleGuard } from "../middleware/role.guard";
-import { AnyFilesInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 
@@ -58,7 +58,7 @@ export class EmployeeController {
     @Patch()
     @Permission('EMPLOYEE_UPDATE')
     @UseGuards(RoleGuard)
-    @UseInterceptors(AnyFilesInterceptor())
+    @UseInterceptors(FileInterceptor('file'))
     @ApiConsumes('multipart/form-data')
     @ApiBody({ type: EmployeeUpdateFile })
     async update(@GetDecoded() decoded: DecodedJwt, @Body() body: EmployeeUpdateBody, @UploadedFile() file: Express.Multer.File) {
@@ -69,6 +69,7 @@ export class EmployeeController {
             if (!employee) {
                 throw new BadRequestException('employee not found', 'EC-U-04')
             }
+            const { salt: oldSalt, ...oldEmployee } = employee
 
             if (file) {
                 photoKey = await this.infra.bucket.uploadBase64(`data:${file.mimetype};base64,${file.buffer.toString('base64')}`, `employee/${employee.id}/${Math.floor(Date.now() / 1000)}-${this.infra.helper.general.generateRandomString(10)}`)
@@ -85,13 +86,25 @@ export class EmployeeController {
 
             await this.repo.db.employee.update(null, employee.id, updateData)
             const employeeNew = await this.repo.db.employee.findById(null, employee.id);
+            const { salt, ...newEmployee } = employeeNew;
 
-            const { salt, password, ...employeeData } = employeeNew
+            (async () => {
+                const log: EmployeeLog = {
+                    timestamp: dayjs().toDate(),
+                    employee_id: employee.id,
+                    old_value: JSON.stringify(oldEmployee),
+                    new_value: JSON.stringify(newEmployee),
+                }
+                await this.repo.queue.employee.add('log', log)
+            })()
+
+            const { password, ...employeeResponse } = newEmployee
+
             return {
                 statusCode: HttpStatus.OK,
                 data: {
-                    ...employeeData,
-                    photo_url: employeeData.photo_key ? await this.infra.bucket.getUrl(employeeData.photo_key) : ''
+                    ...employeeResponse,
+                    photo_url: employeeResponse.photo_key ? await this.infra.bucket.getUrl(employeeResponse.photo_key) : ''
                 }
             }
         } catch (e) {
