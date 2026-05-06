@@ -1,0 +1,3 @@
+- run docker compose
+- dummy user already created on prisma seed (/prisma/seed.ts)
+- credentials are shared on purpose for testing
