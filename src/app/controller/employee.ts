@@ -72,12 +72,13 @@ export class EmployeeController {
             const { salt: oldSalt, ...oldEmployee } = employee
 
             if (file) {
-                photoKey = await this.infra.bucket.uploadBase64(`data:${file.mimetype};base64,${file.buffer.toString('base64')}`, `employee/${employee.id}/${Math.floor(Date.now() / 1000)}-${this.infra.helper.general.generateRandomString(10)}`)
+                photoKey = await this.infra.bucket.uploadBase64(`data:${file.mimetype};base64,${file.buffer.toString('base64')}`, `employee/${this.infra.helper.general.maskEmail(employee.email)}/${Math.floor(Date.now() / 1000)}-${this.infra.helper.general.generateRandomString(10)}`)
             }
 
             const updateData: Prisma.employeeUpdateInput = {
                 photo_key: photoKey ?? undefined,
                 phone_number: body.phoneNumber ?? undefined,
+                updated_at: dayjs().toDate(),
             }
 
             if (body.password) {

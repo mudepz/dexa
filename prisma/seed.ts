@@ -2,6 +2,7 @@ import { Logger } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { seedRole } from "./seed-role";
 import crypto, { randomUUID } from "crypto";
+import { seedAttendance } from "./seed-attendance";
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,12 @@ async function main() {
                 role_id: role.employee.id,
                 full_name: 'Karyawan 1',
                 password: 'employee1', // for test purpose only
+            },
+            {
+                email: 'employee2@dexagroup.com',
+                role_id: role.employee.id,
+                full_name: 'Karyawan 2',
+                password: 'employee2', // for test purpose only
             },
         ]) {
             // Check if there's a non-deleted user with the same email
@@ -45,9 +52,13 @@ async function main() {
                 });
             }
         }
-
-        Logger.debug('seed done', 'seed.main');
     }
+
+    if (process.env.SEED_ATTENDANCE === 'true') {
+        await seedAttendance(prisma)
+    }
+
+    Logger.debug('seed done', 'seed.main');
 }
 
 main().catch((e) => {

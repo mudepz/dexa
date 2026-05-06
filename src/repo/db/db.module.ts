@@ -6,6 +6,7 @@ import { RolePermission } from "./role_permission";
 import { Permission } from "./permission";
 import { Attendance } from "./attendance";
 import { EmployeeLog } from "./employee-log";
+import { Role } from "./role";
 
 @Module({
     providers: [
@@ -14,6 +15,7 @@ import { EmployeeLog } from "./employee-log";
         RolePermission,
         Attendance,
         EmployeeLog,
+        Role,
         DbService,
     ],
     imports: [InfraModule],

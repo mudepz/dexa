@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type, Expose } from "class-transformer";
-import { IsDate, IsNumber, IsOptional } from "class-validator";
+import { IsOptional, IsNumber, IsDate, IsString } from "class-validator";
+import { IsBigInt, TransformToBigInt } from "../middleware/bigint.validator";
 
-export class AttendanceGetQuery {
+export class AdminAttendanceGetQuery {
     @Type(() => Number)
     @IsOptional()
     @IsNumber()
@@ -14,6 +15,13 @@ export class AttendanceGetQuery {
     @IsNumber()
     @ApiProperty({ required: false })
     limit: number;
+
+    @Type(() => String)
+    @IsOptional()
+    @IsString()
+    @Expose({ name: 'employee_name' })
+    @ApiProperty({ required: false, name: 'employee_name' })
+    employeeName: string;
 
     @Type(() => Date)
     @IsDate()

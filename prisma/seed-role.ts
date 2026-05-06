@@ -8,10 +8,11 @@ export async function seedRole(prisma: PrismaClient) {
         create: { name: 'HR Admin' },
     })
     const adminPermissions = await Promise.all([
-        'ADMIN_GET_EMPLOYEES',
-        'ADMIN_GET_EMPLOYEE_DETAIL',
-        'ADMIN_UPDATE_EMPLOYEE',
-        'ADMIN_GET_ATTENDANCES',
+        'ADMIN_EMPLOYEE_GET',
+        'ADMIN_EMPLOYEE_GET_DETAIL',
+        'ADMIN_EMPLOYEE_CREATE',
+        'ADMIN_EMPLOYEE_UPDATE',
+        'ADMIN_ATTENDANCE_GET',
     ].map(permissionName =>
         prisma.permission.upsert({
             where: { name: permissionName },

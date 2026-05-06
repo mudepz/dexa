@@ -5,12 +5,16 @@ import { AuthController } from "./controller/auth";
 import { EmployeeController } from "./controller/employee";
 import { AttendanceController } from "./controller/attendance";
 import { ProcessorModule } from "./processor/processor.module";
+import { AdminEmployeeController } from "./controller/admin-employee";
+import { AdminAttendanceController } from "./controller/admin-attendance";
 
 @Module({
     controllers: [
         AuthController,
         EmployeeController,
         AttendanceController,
+        AdminEmployeeController,
+        AdminAttendanceController,
     ],
     imports: [
         InfraModule,

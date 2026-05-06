@@ -8,7 +8,7 @@ import { GetDecoded } from "../middleware/decoded.decorator";
 import { RoleGuard } from "../middleware/role.guard";
 import { Permission } from "../middleware/permission.decorator";
 import dayjs from "dayjs";
-import { AttendaceGetQuery } from "../dto/attendance";
+import { AttendanceGetQuery } from "../dto/attendance";
 
 @ApiBearerAuth()
 @Controller('attendance')
@@ -20,8 +20,8 @@ export class AttendanceController {
     @Get()
     @Permission('ATTENDANCE_GET')
     @UseGuards(RoleGuard)
-    async get(@GetDecoded() decoded: DecodedJwt, @Query() query: AttendaceGetQuery) {
-        Logger.debug(`decoded: ${JSON.stringify(decoded, null, 2)}`, 'AC-G-02')
+    async get(@GetDecoded() decoded: DecodedJwt, @Query() query: AttendanceGetQuery) {
+        Logger.debug(`query: ${JSON.stringify(query, null, 2)}`, 'AC-G-02')
         try {
             const page = query.page || 1;
             const limit = query.limit || 10;
@@ -38,7 +38,6 @@ export class AttendanceController {
             }
 
             const attendances = await this.repo.db.attendance.findByParam({
-                tx: undefined,
                 page,
                 limit,
                 employeeId: decoded.id,

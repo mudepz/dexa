@@ -11,15 +11,15 @@ export class Attendance extends BaseDb<PrismaClient["attendance"], Prisma.attend
     }
 
     async findByParam(param: {
-        tx: Prisma.TransactionClient,
+        tx?: Prisma.TransactionClient,
         page: number,
         limit: number,
-        employeeId: bigint,
+        employeeId?: bigint,
         startDate: Date,
         endDate: Date,
+        employeeName?: string,
     }) {
         {
-            console.log('param:', param)
             const model = this.infra.prisma.getModel(param.tx);
             const where: Prisma.attendanceWhereInput = {}
 
@@ -44,15 +44,31 @@ export class Attendance extends BaseDb<PrismaClient["attendance"], Prisma.attend
                 where.employee_id = param.employeeId
             }
 
+            if (param.employeeName?.length) {
+                where.employee = {
+                    full_name: {
+                        contains: param.employeeName,
+                        mode: Prisma.QueryMode.insensitive,
+                    }
+                }
+            }
+
             const [data, count] = await Promise.all([
                 model.attendance.findMany({
                     where,
                     orderBy: {
                         tap_in_at: Prisma.SortOrder.desc,
                     },
-
                     take: take,
                     skip: skip,
+                    include: {
+                        employee: {
+                            omit: {
+                                salt: true,
+                                password: true,
+                            }
+                        }
+                    }
                 }),
                 model.attendance.count({ where }),
             ]);
