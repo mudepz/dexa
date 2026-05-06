@@ -29,6 +29,10 @@ export class AttendanceController {
             let endDate: Date = dayjs().endOf('day').toDate()
 
             if (query.startDate && query.endDate) {
+                if (query.startDate > query.endDate) {
+                    throw new BadRequestException('Start Date can not greater than End Date', 'AC-G-03')
+                }
+
                 startDate = dayjs(query.startDate).startOf('day').toDate()
                 endDate = dayjs(query.endDate).endOf('day').toDate()
             }
@@ -44,7 +48,11 @@ export class AttendanceController {
 
             return {
                 statusCode: HttpStatus.OK,
-                data: attendances.data,
+                data: attendances.data.map(data => ({
+                    ...data,
+                    tap_in_at_format: dayjs(data.tap_in_at).format("YYYY-MM-DD HH:mm"),
+                    tap_out_at_format: dayjs(data.tap_out_at).format("YYYY-MM-DD HH:mm"),
+                })),
                 meta: {
                     page,
                     limit,

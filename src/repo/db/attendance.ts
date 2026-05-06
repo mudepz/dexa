@@ -19,6 +19,7 @@ export class Attendance extends BaseDb<PrismaClient["attendance"], Prisma.attend
         endDate: Date,
     }) {
         {
+            console.log('param:', param)
             const model = this.infra.prisma.getModel(param.tx);
             const where: Prisma.attendanceWhereInput = {}
 
